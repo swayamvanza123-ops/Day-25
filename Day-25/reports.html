@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Reports | Day 26</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/reports.css">
+</head>
+<body>
+    <div class="report-layout">
+        <aside class="report-sidebar">
+            <a class="brand" href="index.html">
+                <span class="brand-icon">📦</span>
+                <span>StockFlow</span>
+            </a>
+
+            <p class="nav-heading">MAIN MENU</p>
+            <nav class="side-nav">
+                <a href="index.html"><span>▦</span> Dashboard</a>
+                <a href="index.html#products"><span>📦</span> Products</a>
+                <a href="index.html#categories"><span>▤</span> Categories</a>
+                <a href="index.html#suppliers"><span>♙</span> Suppliers</a>
+                <a href="index.html#sales"><span>↗</span> Sales</a>
+                <a href="index.html#stock"><span>⇅</span> Stock Management</a>
+                <a class="active" href="reports.html"><span>▥</span> Reports & Export</a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="sidebar-note">
+                    <span>✨</span>
+                    <strong>Inventory Insights</strong>
+                    <p>Track your stock and make better decisions.</p>
+                </div>
+                <a class="back-link" href="index.html">← Back to application</a>
+            </div>
+        </aside>
+
+        <main class="report-main">
+            <header class="report-topbar">
+                <div>
+                    <p class="eyebrow">INVENTORY MANAGEMENT / DAY 26</p>
+                    <h1>Reports & Data Export</h1>
+                    <p class="page-subtitle">
+                        Monitor inventory performance and export your reports.
+                    </p>
+                </div>
+                <button type="button" class="btn btn-outline" id="refreshButton">
+                    ↻ Refresh Reports
+                </button>
+            </header>
+
+            <section class="welcome-banner">
+                <div>
+                    <span class="banner-label">INVENTORY OVERVIEW</span>
+                    <h2>Your stock, at a glance.</h2>
+                    <p>Review stock levels, product value, and inventory health.</p>
+                </div>
+                <div class="banner-art" aria-hidden="true">📊</div>
+            </section>
+
+            <section class="stats-grid" aria-label="Inventory summary">
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-icon purple">▦</span>
+                        <span class="stat-caption">All items</span>
+                    </div>
+                    <p class="stat-label">Total Products</p>
+                    <h2 id="totalProducts">0</h2>
+                    <p class="stat-foot">Unique products in inventory</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-icon blue">▤</span>
+                        <span class="stat-caption">Units</span>
+                    </div>
+                    <p class="stat-label">Total Stock Quantity</p>
+                    <h2 id="totalStock">0</h2>
+                    <p class="stat-foot">Available units across products</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-icon green">₹</span>
+                        <span class="stat-caption">Inventory value</span>
+                    </div>
+                    <p class="stat-label">Total Inventory Value</p>
+                    <h2 id="totalValue">₹0.00</h2>
+                    <p class="stat-foot">Price multiplied by stock quantity</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-icon orange">!</span>
+                        <span class="stat-caption">Needs attention</span>
+                    </div>
+                    <p class="stat-label">Low-Stock Products</p>
+                    <h2 id="lowStockCount">0</h2>
+                    <p class="stat-foot">Below the minimum stock level</p>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-icon red">×</span>
+                        <span class="stat-caption">Unavailable</span>
+                    </div>
+                    <p class="stat-label">Out-of-Stock Products</p>
+                    <h2 id="outStockCount">0</h2>
+                    <p class="stat-foot">Products with zero units</p>
+                </article>
+            </section>
+
+            <section class="report-panel">
+                <div class="panel-heading">
+                    <div>
+                        <h2>Complete Inventory Report</h2>
+                        <p>Search and filter products before exporting.</p>
+                    </div>
+                    <button type="button" class="btn btn-primary" id="exportInventory">
+                        ↓ Export Inventory CSV
+                    </button>
+                </div>
+
+                <div class="filters">
+                    <div class="filter-field search-field">
+                        <label for="searchInput">Search product</label>
+                        <input
+                            type="search"
+                            id="searchInput"
+                            placeholder="Search by product name or ID..."
+                        >
+                    </div>
+
+                    <div class="filter-field">
+                        <label for="categoryFilter">Category</label>
+                        <select id="categoryFilter">
+                            <option value="">All Categories</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-field">
+                        <label for="statusFilter">Stock Status</label>
+                        <select id="statusFilter">
+                            <option value="">All Statuses</option>
+                            <option value="In Stock">In Stock</option>
+                            <option value="Low Stock">Low Stock</option>
+                            <option value="Out of Stock">Out of Stock</option>
+                        </select>
+                    </div>
+
+                    <button type="button" class="btn btn-outline clear-button" id="clearFilters">
+                        Clear
+                    </button>
+                </div>
+
+                <div class="report-meta">
+                    <div>
+                        <strong id="reportTitle">Complete Inventory Report</strong>
+                        <span id="recordCount">0 records</span>
+                    </div>
+                    <span id="generatedAt">Generated: —</span>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product ID</th>
+                                <th>Product Name</th>
+                                <th>Category</th>
+                                <th>Unit Price</th>
+                                <th>Stock Qty</th>
+                                <th>Total Product Value</th>
+                                <th>Stock Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventoryTableBody">
+                            <tr>
+                                <td colspan="7" class="empty-cell">Loading inventory...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="table-note">
+                    Product value = unit price × stock quantity. Low stock is based on each
+                    product's minimum stock level, defaulting to 10 when not configured.
+                </p>
+            </section>
+
+            <section class="secondary-grid">
+                <article class="report-panel category-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Category-wise Report</h2>
+                            <p>Products and available units per category.</p>
+                        </div>
+                        <button type="button" class="btn btn-outline" id="exportCategories">
+                            ↓ Export CSV
+                        </button>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Product Count</th>
+                                    <th>Stock Quantity</th>
+                                    <th>Inventory Value</th>
+                                </tr>
+                            </thead>
+                            <tbody id="categoryTableBody"></tbody>
+                        </table>
+                    </div>
+                </article>
+
+                <article class="report-panel status-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Stock Status Report</h2>
+                            <p>Export a separate list for each stock status.</p>
+                        </div>
+                    </div>
+
+                    <div class="status-export-row">
+                        <div>
+                            <span class="status-dot dot-green"></span>
+                            <strong>In Stock</strong>
+                            <p id="inStockSummary">0 products</p>
+                        </div>
+                        <button class="btn btn-small btn-outline" type="button"
+                                data-export-status="In Stock">Export CSV</button>
+                    </div>
+
+                    <div class="status-export-row">
+                        <div>
+                            <span class="status-dot dot-orange"></span>
+                            <strong>Low Stock</strong>
+                            <p id="lowStockSummary">0 products</p>
+                        </div>
+                        <button class="btn btn-small btn-outline" type="button"
+                                data-export-status="Low Stock">Export CSV</button>
+                    </div>
+
+                    <div class="status-export-row">
+                        <div>
+                            <span class="status-dot dot-red"></span>
+                            <strong>Out of Stock</strong>
+                            <p id="outStockSummary">0 products</p>
+                        </div>
+                        <button class="btn btn-small btn-outline" type="button"
+                                data-export-status="Out of Stock">Export CSV</button>
+                    </div>
+                </article>
+            </section>
+
+            <footer class="report-footer">
+                <span>StockFlow Inventory Management</span>
+                <span>Day 26 · Reports & Data Export</span>
+            </footer>
+        </main>
+    </div>
+
+    <div id="toast" class="report-toast" role="status" aria-live="polite"></div>
+
+    <script src="js/reports.js"></script>
+</body>
+</html>

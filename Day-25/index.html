@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>StockFlow | Inventory Management</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <a class="brand" href="index.html">📦 StockFlow</a>
+
+            <nav class="navigation">
+                <a href="#dashboard" class="active">▦ Dashboard</a>
+                <a href="#products">📦 Products</a>
+                <a href="#categories">▤ Categories</a>
+                <a href="#suppliers">♙ Suppliers</a>
+                <a href="#sales">↗ Sales</a>
+                <a href="#stock">⇅ Stock Management</a>
+                <a href="reports.html">📊 Reports & Export</a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div id="currentUser" class="muted"></div>
+                <button id="logoutButton" class="btn btn-light full-width">Log Out</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="page-header">
+                <div>
+                    <p class="eyebrow">INVENTORY MANAGEMENT</p>
+                    <h1 id="pageTitle">Dashboard</h1>
+                    <p class="muted">Manage products, stock and sales in one place.</p>
+                </div>
+                <button class="btn btn-primary" id="openReports">View Reports ↗</button>
+            </header>
+
+            <section id="dashboard" class="app-section">
+                <div class="stat-grid">
+                    <article class="stat-card"><span>Total Products</span><h2 id="dashProducts">0</h2></article>
+                    <article class="stat-card"><span>Total Stock Units</span><h2 id="dashStock">0</h2></article>
+                    <article class="stat-card"><span>Low-Stock Products</span><h2 id="dashLow">0</h2></article>
+                    <article class="stat-card"><span>Total Suppliers</span><h2 id="dashSuppliers">0</h2></article>
+                    <article class="stat-card"><span>Sales Revenue</span><h2 id="dashRevenue">₹0</h2></article>
+                </div>
+
+                <div class="panel">
+                    <div class="section-heading">
+                        <div><h2>Inventory Overview</h2><p class="muted">Current saved products</p></div>
+                        <button class="btn btn-light" id="dashboardRefresh">Refresh</button>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>ID</th><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th></tr></thead>
+                            <tbody id="dashboardTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="products" class="app-section">
+                <div class="panel">
+                    <div class="section-heading"><div><h2>Product Management</h2><p class="muted">Add, edit and delete products.</p></div></div>
+                    <form id="productForm" class="form-grid">
+                        <input type="hidden" id="productId">
+                        <div><label for="productName">Product name</label><input id="productName" required minlength="3"></div>
+                        <div><label for="productCategory">Category</label><select id="productCategory" required></select></div>
+                        <div><label for="productPrice">Unit price (₹)</label><input id="productPrice" type="number" min="0.01" step="0.01" required></div>
+                        <div><label for="productStock">Stock quantity</label><input id="productStock" type="number" min="0" required></div>
+                        <div><label for="productMinimum">Minimum stock</label><input id="productMinimum" type="number" min="0" value="10" required></div>
+                        <div><label for="productSupplier">Supplier</label><input id="productSupplier" placeholder="Supplier name"></div>
+                        <div class="span-all"><label for="productDescription">Description</label><textarea id="productDescription" minlength="3" rows="2"></textarea></div>
+                        <div class="span-all form-actions">
+                            <button class="btn btn-primary" type="submit" id="saveProduct">Add Product</button>
+                            <button class="btn btn-light" type="button" id="cancelProduct">Clear</button>
+                        </div>
+                    </form>
+                    <div class="toolbar"><input id="productSearch" placeholder="Search products..."></div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>ID</th><th>Product</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead>
+                            <tbody id="productsTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="categories" class="app-section">
+                <div class="panel">
+                    <h2>Category Management</h2>
+                    <form id="categoryForm" class="form-grid">
+                        <input id="categoryId" type="hidden">
+                        <div><label for="categoryName">Category name</label><input id="categoryName" required minlength="2"></div>
+                        <div><label for="categoryDescription">Description</label><input id="categoryDescription" required></div>
+                        <div class="form-actions span-all">
+                            <button class="btn btn-primary" type="submit">Save Category</button>
+                            <button class="btn btn-light" type="button" id="cancelCategory">Clear</button>
+                        </div>
+                    </form>
+                    <div class="table-wrap">
+                        <table><thead><tr><th>Name</th><th>Description</th><th>Products</th><th>Actions</th></tr></thead><tbody id="categoriesTable"></tbody></table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="suppliers" class="app-section">
+                <div class="panel">
+                    <h2>Supplier Management</h2>
+                    <form id="supplierForm" class="form-grid">
+                        <input id="supplierId" type="hidden">
+                        <div><label for="supplierName">Supplier name</label><input id="supplierName" required></div>
+                        <div><label for="supplierCompany">Company</label><input id="supplierCompany" required></div>
+                        <div><label for="supplierPhone">Phone</label><input id="supplierPhone" required></div>
+                        <div><label for="supplierEmail">Email</label><input id="supplierEmail" type="email" required></div>
+                        <div class="span-all"><label for="supplierAddress">Address</label><input id="supplierAddress" required></div>
+                        <div class="form-actions span-all"><button class="btn btn-primary">Save Supplier</button><button class="btn btn-light" type="button" id="cancelSupplier">Clear</button></div>
+                    </form>
+                    <div class="table-wrap">
+                        <table><thead><tr><th>Name</th><th>Company</th><th>Phone</th><th>Email</th><th>Address</th><th>Actions</th></tr></thead><tbody id="suppliersTable"></tbody></table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sales" class="app-section">
+                <div class="panel">
+                    <h2>Sales Management</h2>
+                    <form id="saleForm" class="form-grid">
+                        <div><label for="saleCustomer">Customer name</label><input id="saleCustomer" required></div>
+                        <div><label for="salePhone">Customer phone</label><input id="salePhone"></div>
+                        <div><label for="saleProduct">Product</label><select id="saleProduct" required></select></div>
+                        <div><label for="saleQuantity">Quantity</label><input id="saleQuantity" type="number" min="1" required></div>
+                        <div><label for="saleDiscount">Discount (₹)</label><input id="saleDiscount" type="number" min="0" value="0"></div>
+                        <div><label for="saleDate">Sale date</label><input id="saleDate" type="date" required></div>
+                        <div class="span-all"><button class="btn btn-primary">Complete Sale</button></div>
+                    </form>
+                    <div class="table-wrap">
+                        <table><thead><tr><th>Invoice</th><th>Customer</th><th>Product</th><th>Qty</th><th>Total</th><th>Date</th></tr></thead><tbody id="salesTable"></tbody></table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="stock" class="app-section">
+                <div class="panel">
+                    <h2>Stock In / Stock Out</h2>
+                    <form id="stockForm" class="form-grid">
+                        <div><label for="movementProduct">Product</label><select id="movementProduct" required></select></div>
+                        <div><label for="movementType">Movement</label><select id="movementType"><option value="IN">Stock In</option><option value="OUT">Stock Out</option></select></div>
+                        <div><label for="movementQuantity">Quantity</label><input id="movementQuantity" type="number" min="1" required></div>
+                        <div><label for="movementReason">Reason</label><input id="movementReason" required></div>
+                        <div class="span-all"><button class="btn btn-primary">Save Stock Movement</button></div>
+                    </form>
+                    <div class="table-wrap">
+                        <table><thead><tr><th>Date</th><th>Product</th><th>Movement</th><th>Quantity</th><th>Updated Stock</th><th>Reason</th></tr></thead><tbody id="stockTable"></tbody></table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="notifications" class="app-section">
+                <div class="panel">
+                    <div class="section-heading"><h2>Notifications</h2><button id="markAllRead" class="btn btn-light">Mark All Read</button></div>
+                    <div id="notificationsList"></div>
+                </div>
+            </section>
+
+            <section id="activity" class="app-section">
+                <div class="panel">
+                    <h2>Activity Log</h2>
+                    <div class="table-wrap"><table><thead><tr><th>Time</th><th>Activity</th></tr></thead><tbody id="activityTable"></tbody></table></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/activityLog.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/categories.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/suppliers.js"></script>
+    <script src="js/sales.js"></script>
+    <script src="js/stockManagement.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

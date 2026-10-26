@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login | StockFlow</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="login-page">
+    <form class="login-card" id="loginForm">
+        <div class="login-logo">📦</div>
+        <h1>StockFlow</h1>
+        <p class="muted">Inventory Management System</p>
+
+        <label for="email">Email address</label>
+        <input id="email" type="email" required value="admin@example.com">
+
+        <label for="password">Password</label>
+        <div class="password-row">
+            <input id="password" type="password" required value="admin123">
+            <button type="button" id="togglePassword" class="btn btn-light">Show</button>
+        </div>
+
+        <label for="role">Account role</label>
+        <select id="role">
+            <option value="Admin">Admin</option>
+            <option value="Staff">Staff</option>
+        </select>
+
+        <button class="btn btn-primary full-width" type="submit">Sign In</button>
+        <p id="loginMessage" class="form-message"></p>
+
+        <div class="demo-box">
+            <strong>Demo credentials</strong>
+            <p>Admin: admin@example.com / admin123</p>
+            <p>Staff: staff@example.com / staff123</p>
+        </div>
+    </form>
+
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>
